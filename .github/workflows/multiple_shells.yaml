@@ -2,12 +2,13 @@ name: Multiple shells commands #note that this is a Github actions workflow name
 on: 
   push: 
     branches: 
-      - "main" 
+      # - "main" 
+      - never-trigger-this 
   pull_request: 
     types: [closed, assigned, opened, reopened] #workflow will be triggered on push to main branch or on pull request events like closed, assigned, opened, reopened.
 jobs: 
   run-shell-command: #this is the first job named "run-shell-command" that will run on ubuntu-latest environment.
-    runs-on: ubuntu-latest 
+    runs-on: ubuntu-latest #when one of the above events occur, Github spins up a fresh Linux vm, installs preconfigured tools(python, Git) and then assigns the job to it.
     steps: 
       - name: python commands 
         run: | 

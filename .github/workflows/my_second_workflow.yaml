@@ -1,5 +1,7 @@
 name: Shell commands
-on: [push]
+on:
+ push:
+  - never-trigger-this
 jobs:
   run-shell-command:
     runs-on: ${{ matrix.os }}

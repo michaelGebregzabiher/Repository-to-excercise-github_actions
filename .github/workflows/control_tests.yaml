@@ -1,0 +1,27 @@
+name: Control Push 
+on: push 
+jobs: 
+  qa:           #this is the job id (qa steht für quality assurance)
+    name: Check tests  #name of the job 
+    runs-on: ubuntu-20.04 
+    steps: 
+      - name: Checkout on master 
+        uses: actions/checkout@v3 #Dieser Schritt "lädt"(checkout) deinen Code aus deinem GitHub-Repository auf den virtuellen Server (Runner)(in our case ubuntu 20.04) herunter.
+                                  #Note : actions/checkout@v3 ist eine offizielle GitHub Action, die speziell dafür entwickelt wurde, deinen Code aus dem Repository zu holen. Es ist eine bewährte Methode, um sicherzustellen, dass der Runner Zugriff auf den neuesten Stand deines Codes hat, bevor er mit den Tests oder anderen Aktionen fortfährt.
+                                  #Warum es wichtig ist: Stell dir den GitHub-Runner wie einen brandneuen Computer vor. Ohne diesen Schritt wäre der Computer leer – er hätte keinen Zugriff auf deine .py-Dateien, deinen tests/-Ordner oder dein README.md. Erst nach diesem Befehl "befindet" sich der Runner innerhalb deines Projektordners.
+      - name: Set up Python 
+        uses: actions/setup-python@master #this is also another reusable official GitHub Action that sets up a Python environment on the runner. It allows you to specify which version of Python you want to use for your tests. In this case, we are using "3.x", which means it will use the latest available version of Python 3.
+        with: 
+          python-version: "3.x" 
+ 
+      - name: Install pytest and flake8 
+        run: | 
+          pip install pytest 
+          pip install flake8 
+ 
+      - name: Run tests #the pytest function will automatically discover for files which begin with "test_" in the whole project(especially the tests/-folder) .Result: shows which tests passed and which failed.
+        run: | 
+          pytest 
+ 
+      - name: Run flake8 
+        uses: py-actions/flake8@v2
